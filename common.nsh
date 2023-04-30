@@ -7,6 +7,7 @@
 
 !delfile /nonfatal "${INSTALLER_ONINIT}"
 
+!include "${__FILEDIR__}\plugins\StrContains.nsh"
 !addplugindir "${__FILEDIR__}\plugins\nsunzip"
 !addplugindir "${__FILEDIR__}\plugins\execcmd"
 
@@ -33,9 +34,11 @@
 
 		File "${__FILEDIR__}\apps\${app}\${APP_FILE}"
 
-  		DetailPrint "${GLOBAL_TEMP_FOLDER}\${app}\${APP_FILE}"
+		${StrContains} $R0 ".zip" "${APP_FILE}"
 
-		nsUnzip::Extract "*.zip" /END
+		${If} $R0 = ".zip"
+			nsUnzip::Extract "*.zip" /END
+		${EndIf}
 
   		DetailPrint "Executing ${APP_CMDLINE} ${APP_ARGS}"
 		${If} ${APP_MODE} == "yes"
