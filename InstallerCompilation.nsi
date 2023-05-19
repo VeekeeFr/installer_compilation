@@ -29,12 +29,14 @@ RequestExecutionLevel user
 
 !include "${__FILEDIR__}\common.nsh"
 
-!system 'for /d /R %D in (apps/*) do echo !insertmacro IncludeApp "%~nxD" > "${INSTALLER_APPS}"'
-
+!insertmacro CleanTempScriptFile "${INSTALLER_APPS}"
+!system 'for /d %D in (apps/*) do echo !insertmacro IncludeApp "%~nxD" >> "${INSTALLER_APPS}"'
 !include "${INSTALLER_APPS}"
+!insertmacro CleanTempScriptFile "${INSTALLER_APPS}"
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 !include "${INSTALLER_ONINIT}"
+!insertmacro CleanTempScriptFile "${INSTALLER_ONINIT}"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Function .onGUIEnd
