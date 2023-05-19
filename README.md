@@ -16,7 +16,7 @@ Arguments=-Dargument1=value1 -Dargument2=value2
 Note: Enabling UAC will ignore all setup arguments
 
 2b. For simple use, just add exe files.
-Each exe files will be included and executed separately (using runas).
+Each exe files will be included and executed separately (using runas), unless a setup.exe or an install.exe file is included.
 
 2c. Custom hooks can be included :
 - pre_install.nsh : Script will be executed before any exe file execution (from the section)

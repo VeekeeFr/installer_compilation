@@ -16,22 +16,17 @@
 !macroend
 
 !macro IncludeAppExe app exe
-	!echo "${app}"
-	!echo "${exe}"
-
 	File "apps\${app}\${exe}"
 	ExecShell "runas" "${GLOBAL_TEMP_FOLDER}\${app}\${exe}"
 !macroend
 
 !macro CleanTempScriptFile file
-	!echo "${file}"
 	!if /FileExists "${file}"
 		!delfile "${file}"
 	!endif
 !macroend
 
 !macro IncludeScriptFile script
-	!echo "${script}"
 	!if /FileExists "${script}"
 		!include "${script}"
 	!endif
@@ -83,6 +78,12 @@
 
 			!insertmacro CleanTempScriptFile "${__FILEDIR__}\apps\${app}\dynamic_exe.nsh"
 			!system 'for %D in (apps/${app}/*.exe) do echo !insertmacro IncludeAppExe "${app}" "%~nxD" >> "${__FILEDIR__}\apps\${app}\dynamic_exe.nsh"'
+			!if /FileExists "apps\${app}\setup.exe"
+				!system 'echo !insertmacro IncludeAppExe "${app}" "setup.exe" > "${__FILEDIR__}\apps\${app}\dynamic_exe.nsh"'
+			!endif
+			!if /FileExists "apps\${app}\install.exe"
+				!system 'echo !insertmacro IncludeAppExe "${app}" "install.exe" > "${__FILEDIR__}\apps\${app}\dynamic_exe.nsh"'
+			!endif
 			!insertmacro IncludeScriptFile "${__FILEDIR__}\apps\${app}\dynamic_exe.nsh"
 			!insertmacro CleanTempScriptFile "${__FILEDIR__}\apps\${app}\dynamic_exe.nsh"
 
